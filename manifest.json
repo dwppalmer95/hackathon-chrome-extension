@@ -1,0 +1,12 @@
+{
+  "manifest_version": 2,
+  "name": "hackathonChromeExt",
+  "description": "test 1",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["./client/main.js"]
+    }
+  ]
+}
