@@ -33,18 +33,21 @@ document.addEventListener('mouseup', () => {
       fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + firstWord)
         .then(response => response.json())
         .then(parsedResponse => getDictionaryEntry(parsedResponse[0]))
-        .then(dictionaryEntry => console.log(dictionaryEntry))
+        .then(dictionaryEntry => showTextBubble(dictionaryEntry))
         .catch(e => console.log(e));
-      
-      textBubble.style.top = mouseY + document.documentElement.scrollTop + 'px';
-      textBubble.style.left = mouseX + 'px';
-      textBubble.style.visibility = 'visible'
-      text = document.createTextNode('DEFINITION TEXT STRING HERE')
-      textBubble.appendChild(text);
-      textBubble.style.fontSize = "16px"
 
     }
 });
+
+function showTextBubble(dictionaryEntry) {
+  textBubble.style.top = mouseY + document.documentElement.scrollTop + 'px';
+  textBubble.style.left = mouseX + 'px';
+  textBubble.style.visibility = 'visible'
+  console.log(dictionaryEntry);
+  text = document.createTextNode(dictionaryEntry.toString(dictionaryEntry));
+  textBubble.appendChild(text);
+  textBubble.style.fontSize = "16px"
+}
 
 function getDictionaryEntry(definitionResponse) { //TODO - move to DictionaryEntry.Create()
       
@@ -93,6 +96,20 @@ class DictionaryEntry {
     this.wordMeanings = wordMeanings;
   }
 }
+
+DictionaryEntry.prototype.toString = (dictionaryEntry) => {
+  let string = dictionaryEntry.word + '\n\n';
+  
+  console.log(dictionaryEntry["wordMeanings"]);
+  const firstMeaning = dictionaryEntry.wordMeanings[0];
+  const firstDef = firstMeaning[0];
+  string += `Part of speech: ${firstMeaning.partOfSpeech}\n\n`;
+  
+  firstMeaning.definitions.forEach(definition => {
+    string += `Definition: ${definition.definition}\nExample: ${definition.example}`;
+  });
+  return string;
+};
 
 class WordMeaning {
   constructor(partOfSpeech, definitions) {
