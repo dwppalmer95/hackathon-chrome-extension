@@ -44,8 +44,14 @@ function showTextBubble(dictionaryEntry) {
   textBubble.style.left = mouseX + 'px';
   textBubble.style.visibility = 'visible'
   console.log(dictionaryEntry);
-  text = document.createTextNode(dictionaryEntry.toString(dictionaryEntry));
-  textBubble.appendChild(text);
+  const arrayOfStrings = dictionaryEntry.toString(dictionaryEntry);
+  let lineBreak = document.createElement("br"); 
+  for (let i = 0; i < arrayOfStrings.length; i++) {
+    text = document.createTextNode(arrayOfStrings[i]);
+    textBubble.appendChild(text);
+    lineBreak = document.createElement("br");
+    textBubble.appendChild(lineBreak);
+  }
   textBubble.style.fontSize = "16px"
 }
 
@@ -98,17 +104,19 @@ class DictionaryEntry {
 }
 
 DictionaryEntry.prototype.toString = (dictionaryEntry) => {
-  let string = dictionaryEntry.word + '\n\n';
+  const arrayOfStrings = [];
+  arrayOfStrings.push("Word:");
+  arrayOfStrings.push('\t' + dictionaryEntry.word);
   
-  console.log(dictionaryEntry["wordMeanings"]);
   const firstMeaning = dictionaryEntry.wordMeanings[0];
-  const firstDef = firstMeaning[0];
-  string += `Part of speech: ${firstMeaning.partOfSpeech}\n\n`;
+  arrayOfStrings.push(`Part of speech: ${firstMeaning.partOfSpeech}`);
   
   firstMeaning.definitions.forEach(definition => {
-    string += `Definition: ${definition.definition}\nExample: ${definition.example}`;
+    arrayOfStrings.push(`Definition: ${definition.definition}`);
+    arrayOfStrings.push(`Example: ${definition.example}`);
   });
-  return string;
+
+  return arrayOfStrings;
 };
 
 class WordMeaning {
