@@ -5,8 +5,8 @@
   "version": "1.0",
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*"],
       "css": ["main.css"],
+      "matches": ["*://*/*"],
       "js": ["./client/main.js"]
     }
   ]
